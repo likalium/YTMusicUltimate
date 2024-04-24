@@ -25,7 +25,7 @@ jobs:
 
     steps:
       - name: Checkout Main
-        uses: actions/checkout@v4.1.1
+        uses: actions/checkout@v4.1.4
         with:
           path: main
           submodules: recursive
@@ -38,18 +38,18 @@ jobs:
         run: echo "$(brew --prefix make)/libexec/gnubin" >> $GITHUB_PATH 
 
       - name: Setup Theos
-        uses: actions/checkout@v4.1.1
+        uses: actions/checkout@v4.1.4
         with:
           repository: theos/theos
-          ref: 4bcc52914e0eeca719288522938185decaa8a1cb
+          ref: 6b77f2247c6817bf40aa8229ce141cc695af7c3d
           path: theos
           submodules: recursive
       
       - name: SDK Caching
         id: SDK
-        uses: actions/cache@v4.0.1
+        uses: actions/cache@v4.0.2
         env:
-          cache-name: iOS-16.2-SDK
+          cache-name: iOS-15.8-SDK
         with:
           path: theos/sdks/
           key: ${{ env.cache-name }}
@@ -60,14 +60,14 @@ jobs:
         run: |
           git clone --quiet -n --depth=1 --filter=tree:0 https://github.com/arichorn/sdks/
           cd sdks
-          git sparse-checkout set --no-cone iPhoneOS16.2.sdk
+          git sparse-checkout set --no-cone iPhoneOS15.8.sdk
           git checkout
           mv *.sdk $THEOS/sdks
         env:
           THEOS: ${{ github.workspace }}/theos
 
       - name: Setup Theos Jailed
-        uses: actions/checkout@v4.1.1
+        uses: actions/checkout@v4.1.4
         with:
           repository: qnblackcat/theos-jailed
           ref: master
